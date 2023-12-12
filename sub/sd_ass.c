@@ -562,7 +562,8 @@ static struct sub_bitmaps *get_bitmaps(struct sd *sd, struct mp_osd_res dim,
     struct sd_ass_priv *ctx = sd->priv;
     struct mp_subtitle_opts *opts = sd->opts;
     bool no_ass = !opts->ass_enabled || ctx->on_top ||
-                  opts->ass_style_override == 5 || order == 1;
+                  opts->ass_style_override == 5 ||
+                  (order == 1 && opts->sec_sub_style_override);
     bool converted = ctx->is_converted || no_ass;
     ASS_Track *track = no_ass ? ctx->shadow_track : ctx->ass_track;
     ASS_Renderer *renderer = ctx->ass_renderer;
