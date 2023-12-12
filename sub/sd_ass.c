@@ -852,9 +852,6 @@ static int control(struct sd *sd, enum sd_ctrl cmd, void *arg)
     case SD_CTRL_SET_VIDEO_PARAMS:
         ctx->video_params = *(struct mp_image_params *)arg;
         return CONTROL_OK;
-    case SD_CTRL_SET_TOP:
-        ctx->on_top = *(bool *)arg;
-        return CONTROL_OK;
     case SD_CTRL_UPDATE_OPTS: {
         int flags = (uintptr_t)arg;
         if (flags & UPDATE_SUB_FILT) {
