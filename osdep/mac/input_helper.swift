@@ -197,6 +197,15 @@ class InputHelper: NSObject {
         }
     }
 
+    func command(args: [String]) {
+        lock.withLock {
+            guard let input = input, !args.isEmpty else { return }
+            var cArgs: [UnsafePointer<CChar>?] = args.map { UnsafePointer(strdup($0)) } + [nil]
+            mp_input_run_cmd(input, &cArgs)
+            cArgs.forEach { free(UnsafeMutablePointer(mutating: $0)) }
+        }
+    }
+
     private func mapType(_ type: NSEvent.EventType) -> Int32 {
         let typeMapping: [NSEvent.EventType: UInt32] = [
             .keyDown: MP_KEY_STATE_DOWN,
@@ -294,7 +303,7 @@ class InputHelper: NSObject {
                 (NSEvent.modifierFlags.contains(.shift) ? "append" : "replace")
             let fileClean = cleanPath(file: file)
 
-            command("loadfile \"\(fileClean)\" \(action)")
+            command(args: ["loadfile", fileClean, action])
         }
     }
 
